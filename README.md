@@ -1,8 +1,8 @@
 # bard-ai-api
 Bard AI API is built with Next.js and PaLM API.
 - nextjs 13.5.3
-- google-auth-library
-- google-auth-library
+- PaLM API
+- google-auth-library + @google-ai/generativelanguage
 
 ## Getting Started
 1. install dependencies by ```yarn install```
