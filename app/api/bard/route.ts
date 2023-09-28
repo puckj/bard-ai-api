@@ -4,16 +4,14 @@ import { NextResponse } from "next/server"
 
 const MODEL_NAME = "models/chat-bison-001";
 const API_KEY = process.env.PALM_API_KEY;
-
 const client = new DiscussServiceClient({
     authClient: new GoogleAuth().fromAPIKey(API_KEY!),
 });
 
 export async function POST(request: Request) {
     const data: any = await request.json()
-    const messages = [data];
-    console.log('Message to ChatBot => ', messages);
-    const result = await client.generateMessage({
+    console.log('Message to ChatBot => ', data);
+    const result: any = await client.generateMessage({
         // required, which model to use to generate the result
         model: MODEL_NAME,
         // optional, 0.0 always uses the highest-probability result
@@ -26,22 +24,18 @@ export async function POST(request: Request) {
         topP: 0.95,
         prompt: {
             // optional, sent on every request and prioritized over history
-            messages: messages,
+            messages: [data],
         },
     })
     try {
+        let responseText = null
+        console.log(result[0], ' [reponse result]');
         if (result[0] && result[0].candidates?.length! > 0) {
-            console.log(true);
-            // console.log(result[0].candidates, 'result 5555');     
-            // return 
+            responseText = result[0].candidates[0].content
         } else {
-            console.log(false);
+            responseText = "Sorry..., We Couldn't Generate A Reply"
         }
-        // if(result[0].candidates)
-        // console.log(JSON.stringify(result, null, 2));
-        // messages.push()
-        // return NextResponse.json(result)
-        return NextResponse.json({ name: 'John Doe' })
+        return NextResponse.json({ status: 200, response_text: responseText })
     } catch (err: any) {
         console.error(err, 'error')
         return new NextResponse(err, {
@@ -49,5 +43,3 @@ export async function POST(request: Request) {
         });
     }
 }
-
-// Sorry..., We Couldn't Generate A Reply
