@@ -19,6 +19,8 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "encoding": "^0.1.13",
+    "request": "^2.88.2",
     "typescript": "latest"
   }
 }
